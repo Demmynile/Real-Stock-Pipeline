@@ -1,5 +1,5 @@
-FROM bitnami/spark:3.5
+FROM apache/spark:3.5.1
 
 USER root
 
-RUN pip install psycopg2-binary
+RUN python3 -m pip install --no-cache-dir psycopg2-binary
