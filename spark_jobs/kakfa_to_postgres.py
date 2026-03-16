@@ -1,6 +1,7 @@
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 import psycopg2
+import os
 
 spark = SparkSession.builder \
     .appName("KafkaSparkPipeline") \
@@ -8,7 +9,7 @@ spark = SparkSession.builder \
 
 df = spark.readStream \
     .format("kafka") \
-    .option("kafka.bootstrap.servers", "kafka:9092") \
+    .option("kafka.bootstrap.servers", os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")) \
     .option("subscribe", "events") \
     .load()
 
@@ -19,10 +20,10 @@ def write_to_postgres(batch_df, batch_id):
     data = batch_df.collect()
 
     conn = psycopg2.connect(
-        host="postgres",
-        database="analytics",
-        user="sparkuser",
-        password="sparkpass"
+        host=os.getenv("DB_HOST", "postgres"),
+        database=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD")
     )
 
     cur = conn.cursor()

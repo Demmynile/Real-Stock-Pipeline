@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 import psycopg2
+import os
 
 app = FastAPI()
 
 def get_conn():
     return psycopg2.connect(
-        host="postgres",
-        database="analytics",
-        user="sparkuser",
-        password="sparkpass"
+        host=os.getenv("DB_HOST", "postgres"),
+        database=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD")
     )
 
 @app.get("/events")

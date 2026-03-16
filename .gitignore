@@ -1,0 +1,16 @@
+# Ignore Dockerfiles (including environment-specific variants)
+**/Dockerfile
+**/Dockerfile.*
+**/dockerfile
+**/dockerfile.*
+
+# Ignore Docker Compose files
+**/docker-compose.yml
+**/docker-compose.yaml
+**/docker-compose.*.yml
+**/docker-compose.*.yaml
+
+# Ignore dotenv files with sensitive values
+.env
+.env.*
+!.env.example
